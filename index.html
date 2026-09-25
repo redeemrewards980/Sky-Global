@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SKY GLOBAL - Professional Visa Assistance & Travel Documentation Services. Your Journey Starts With Sky Global.">
+    <title>SKY GLOBAL | Professional Visa Assistance</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gold: #C9A961;
+            --secondary-gold: #F4E8C1;
+            --navy-blue: #1e3a5f;
+            --dark-blue: #0f172a;
+            --white: #ffffff;
+            --off-white: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --success: #10b981;
+            --shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--off-white);
+        }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; font-weight: 700; }
+
+        /* Top Bar */
+        .top-bar {
+            background: linear-gradient(90deg, var(--navy-blue) 0%, var(--dark-blue) 100%);
+            color: var(--white);
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+        }
+        .top-bar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .countries-list { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+        .country-item { display: flex; align-items: center; gap: 0.5rem; font-weight: 500; }
+        .top-contact { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+        .top-contact a { color: var(--secondary-gold); text-decoration: none; transition: color 0.3s ease; font-weight: 500; }
+        .top-contact a:hover { color: var(--primary-gold); }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 45px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { display: flex; flex-direction: column; text-decoration: none; cursor: pointer; }
+        .logo-main {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--navy-blue) 0%, var(--primary-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+        .logo-sub { font-size: 0.8rem; color: var(--text-light); font-weight: 500; letter-spacing: 1px; margin-top: 3px; text-transform: uppercase; }
+        .nav-menu { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; transition: all 0.3s ease; position: relative; cursor: pointer; }
+        .nav-link:hover { color: var(--navy-blue); }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--primary-gold); transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .header-buttons { display: flex; gap: 1rem; }
+        .btn {
+            padding: 0.85rem 1.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-gold) 0%, #B8941F 100%); color: var(--white); box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 169, 97, 0.4); }
+        .btn-secondary { background: transparent; color: var(--navy-blue); border: 2px solid var(--navy-blue); }
+        .btn-secondary:hover { background: var(--navy-blue); color: var(--white); }
+        .btn-gold { background: linear-gradient(135deg, var(--primary-gold) 0%, #B8941F 100%); color: var(--white); box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 169, 97, 0.4); }
+        .btn-large { padding: 1.1rem 2.5rem; font-size: 1.05rem; }
+        .mobile-menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; }
+        .mobile-menu-toggle span { width: 25px; height: 3px; background: var(--navy-blue); transition: all 0.3s ease; }
+
+        /* Hero */
+        .hero {
+            margin-top: 130px;
+            position: relative;
+            min-height: 95vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(30, 58, 95, 0.92) 0%, rgba(15, 23, 42, 0.88) 100%);
+            color: var(--white);
+            overflow: hidden;
+        }
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .hero-content { animation: fadeInUp 1s ease; }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(201, 169, 97, 0.15);
+            border: 1px solid var(--primary-gold);
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--primary-gold);
+            letter-spacing: 0.5px;
+        }
+        .hero-title { font-size: 3.5rem; line-height: 1.15; margin-bottom: 1.5rem; font-weight: 700; letter-spacing: -1px; }
+        .hero-subtitle { font-size: 1.5rem; color: rgba(255,255,255,0.95); margin-bottom: 1rem; font-weight: 400; line-height: 1.5; }
+        .hero-text { font-size: 1.1rem; color: rgba(255,255,255,0.85); margin-bottom: 2.5rem; max-width: 550px; line-height: 1.7; font-weight: 300; }
+        .hero-buttons { display: flex; gap: 1.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .trust-badges { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .trust-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: rgba(255,255,255,0.9); font-weight: 500; }
+        .trust-item i { color: var(--primary-gold); font-size: 1rem; }
+        .hero-gallery { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; animation: fadeInRight 1s ease; }
+        .gallery-item { position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .gallery-item img { width: 100%; height: 280px; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-item.large { grid-column: span 2; }
+        .gallery-item.large img { height: 320px; }
+        .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent); padding: 2rem 1.5rem 1.5rem; color: var(--white); }
+        .gallery-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .gallery-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.8); font-weight: 400; }
+
+        /* Doorstep Banner */
+        .doorstep-banner {
+            background: linear-gradient(135deg, var(--secondary-gold) 0%, #fff 100%);
+            padding: 3rem 2rem;
+            border-top: 3px solid var(--primary-gold);
+            border-bottom: 3px solid var(--primary-gold);
+        }
+        .doorstep-container { max-width: 900px; margin: 0 auto; text-align: center; }
+        .doorstep-icon { font-size: 2.5rem; color: var(--primary-gold); margin-bottom: 1rem; }
+        .doorstep-title { color: var(--navy-blue); font-size: 2rem; margin-bottom: 1rem; }
+        .doorstep-text { color: var(--text-dark); font-size: 1.2rem; line-height: 1.6; font-weight: 500; max-width: 800px; margin: 0 auto; }
+
+        /* Sections */
+        .section { padding: 6rem 2rem; }
+        .section-container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-gold), #B8941F);
+            color: var(--white);
+            padding: 0.6rem 2rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .section-title { font-size: 2.8rem; color: var(--navy-blue); margin-bottom: 1rem; letter-spacing: -0.5px; }
+        .section-subtitle { font-size: 1.15rem; color: var(--text-light); max-width: 700px; margin: 0 auto; font-weight: 400; }
+
+        /* Journey */
+        .journey-section { background: var(--white); }
+        .journey-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .journey-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        .journey-card:hover { transform: translateY(-8px); border-color: var(--primary-gold); box-shadow: 0 30px 80px rgba(0,0,0,0.12); }
+        .journey-number {
+            position: absolute;
+            top: -15px;
+            left: 2rem;
+            background: linear-gradient(135deg, var(--primary-gold), #B8941F);
+            color: var(--white);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border: 3px solid var(--white);
+        }
+        .journey-icon { font-size: 2.5rem; color: var(--navy-blue); margin-bottom: 1.5rem; margin-top: 1rem; }
+        .journey-title { font-size: 1.3rem; color: var(--navy-blue); margin-bottom: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
+        .journey-text { color: var(--text-light); font-size: 0.95rem; line-height: 1.7; font-weight: 400; }
+
+        /* Target */
+        .target-section {
+            background: linear-gradient(135deg, var(--navy-blue) 0%, var(--dark-blue) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        .target-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 800px; height: 800px; background: rgba(201, 169, 97, 0.05); border-radius: 50%; }
+        .target-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+        .target-content h2 { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--white); font-family: 'Inter', sans-serif; font-weight: 700; }
+        .target-content p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; color: rgba(255,255,255,0.9); font-weight: 300; }
+        .target-disclaimer { background: rgba(201, 169, 97, 0.1); border-left: 3px solid var(--primary-gold); padding: 1.5rem; border-radius: 4px; margin-bottom: 2.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.9); }
+        .target-image { position: relative; }
+        .target-image img { width: 100%; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,0.3); }
+
+        /* Services */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
+        .service-card { position: relative; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.4s ease; height: 450px; }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 40px 100px rgba(0,0,0,0.2); }
+        .service-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .service-card:hover .service-image { transform: scale(1.1); }
+        .service-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(30, 58, 95, 0.95), rgba(30, 58, 95, 0.7), transparent); padding: 2.5rem 2rem 2rem; color: var(--white); }
+        .service-title { font-size: 1.5rem; margin-bottom: 0.75rem; font-family: 'Inter', sans-serif; font-weight: 700; }
+        .service-desc { font-size: 0.95rem; color: rgba(255,255,255,0.9); margin-bottom: 1.75rem; line-height: 1.6; font-weight: 400; }
+
+        /* Countries */
+        .countries-section { background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); }
+        .countries-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2.5rem; }
+        .country-card { background: var(--white); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.4s ease; cursor: pointer; border: 1px solid #e2e8f0; }
+        .country-card:hover { transform: translateY(-8px); border-color: var(--primary-gold); box-shadow: 0 40px 100px rgba(0,0,0,0.15); }
+        .country-image { width: 100%; height: 240px; object-fit: cover; }
+        .country-content { padding: 2rem; }
+        .country-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+        .country-flag { font-size: 2.5rem; line-height: 1; }
+        .country-name { font-size: 1.4rem; color: var(--navy-blue); font-weight: 700; font-family: 'Inter', sans-serif; }
+        .country-visas { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.75rem; }
+        .visa-tag { background: linear-gradient(135deg, var(--secondary-gold), #fff); color: var(--navy-blue); padding: 0.4rem 1rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; border: 1px solid var(--primary-gold); }
+
+        /* Why Choose Us */
+        .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+        .why-card { text-align: center; padding: 3rem 2.5rem; background: var(--white); border-radius: 8px; box-shadow: var(--shadow); transition: all 0.4s ease; border: 1px solid #e2e8f0; }
+        .why-card:hover { border-color: var(--primary-gold); transform: translateY(-8px); box-shadow: 0 30px 80px rgba(0,0,0,0.12); }
+        .why-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-gold), #B8941F); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; color: var(--white); font-size: 2rem; }
+        .why-title { font-size: 1.3rem; color: var(--navy-blue); margin-bottom: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
+        .why-text { color: var(--text-light); font-size: 0.95rem; line-height: 1.7; font-weight: 400; }
+
+        /* Footer */
+        .footer { background: linear-gradient(135deg, var(--dark-blue) 0%, var(--navy-blue) 100%); color: var(--white); padding: 5rem 2rem 2.5rem; }
+        .footer-container { max-width: 1400px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3.5rem; margin-bottom: 3.5rem; }
+        .footer-brand .logo-main { background: linear-gradient(135deg, var(--primary-gold), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1.25rem; }
+        .footer-brand p { color: rgba(255,255,255,0.75); line-height: 1.8; margin-bottom: 1.75rem; }
+        .footer-social { display: flex; gap: 1.25rem; }
+        .footer-social a { width: 48px; height: 48px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); transition: all 0.3s ease; font-size: 1.2rem; }
+        .footer-social a:hover { background: var(--primary-gold); transform: translateY(-5px); }
+        .footer-title { font-size: 1.25rem; margin-bottom: 1.75rem; color: var(--primary-gold); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 1rem; }
+        .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; transition: all 0.3s ease; cursor: pointer; }
+        .footer-links a:hover { color: var(--primary-gold); padding-left: 5px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2.75rem; text-align: center; color: rgba(255,255,255,0.6); font-size: 0.95rem; }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-container, .target-container { grid-template-columns: 1fr; }
+            .journey-grid, .why-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-title { font-size: 2.5rem; }
+            .section-title { font-size: 2.2rem; }
+        }
+        @media (max-width: 768px) {
+            .top-bar { display: none; }
+            .header { top: 0; }
+            .hero { margin-top: 80px; }
+            .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); flex-direction: column; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); gap: 1rem; }
+            .nav-menu.active { display: flex; }
+            .mobile-menu-toggle { display: flex; }
+            .header-buttons { display: none; }
+            .journey-grid, .why-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2rem; }
+            .section-title { font-size: 1.8rem; }
+            .hero-gallery { grid-template-columns: 1fr; }
+            .gallery-item.large { grid-column: span 1; }
+            .services-grid, .countries-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .section { padding: 4rem 1.5rem; }
+            .doorstep-title { font-size: 1.5rem; }
+            .doorstep-text { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-container">
+            <div class="countries-list">
+                <span class="country-item">🇨🇦 Canada</span>
+                <span class="country-item">🇩🇪 Germany</span>
+                <span class="country-item">🇦🇪 UAE</span>
+                <span class="country-item">🇸🇬 Singapore</span>
+                <span class="country-item">🇺🇸 USA</span>
+                <span class="country-item">🇬🇧 UK</span>
+                <span class="country-item">🇦🇺 Australia</span>
+            </div>
+            <div class="top-contact">
+                <a href="mailto:info@skyglobal.com"><i class="fas fa-envelope"></i> info@skyglobal.com</a>
+                <a href="tel:+911234567890"><i class="fas fa-phone"></i> +91 1234567890</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <div class="logo" onclick="window.scrollTo(0,0)">
+                <span class="logo-main">SKY GLOBAL</span>
+                <span class="logo-sub">Global Visa Assistance</span>
+            </div>
+
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a class="nav-link" onclick="scrollToSection('home')">Home</a></li>
+                    <li><a class="nav-link" onclick="scrollToSection('services')">Visa Services</a></li>
+                    <li><a class="nav-link" onclick="scrollToSection('countries')">Countries</a></li>
+                    <li><a class="nav-link" onclick="scrollToSection('how-it-works')">How It Works</a></li>
+                    <li><a class="nav-link" onclick="scrollToSection('about')">About Us</a></li>
+                    <li><a class="nav-link" onclick="scrollToSection('faqs')">FAQs</a></li>
+                    <li><a class="nav-link" onclick="scrollToSection('contact')">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-buttons">
+                <a href="application.html" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Start Application
+                </a>
+                <button class="btn btn-secondary" onclick="scrollToSection('contact')">
+                    <i class="fas fa-comments"></i> Talk to Expert
+                </button>
+            </div>
+
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero" id="home">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-clock"></i>
+                        20-Day Target Application Assistance
+                    </div>
+                    <h1 class="hero-title">Your Journey Starts With Sky Global.</h1>
+                    <p class="hero-subtitle">Professional Visa Assistance for Your International Travel Plans.</p>
+                    <p class="hero-text">Get organized visa application assistance and professional guidance for your international travel dreams.</p>
+                    
+                    <div class="hero-buttons">
+                        <a href="application.html" class="btn btn-gold btn-large">
+                            <i class="fas fa-rocket"></i> Start Your Visa Application
+                        </a>
+                        <button class="btn btn-secondary btn-large" onclick="scrollToSection('services')" style="border-color: white; color: white;">
+                            Explore Visa Services
+                        </button>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="trust-item"><i class="fas fa-check"></i><span>Multiple Visa Categories</span></div>
+                        <div class="trust-item"><i class="fas fa-check"></i><span>Multiple Destinations</span></div>
+                        <div class="trust-item"><i class="fas fa-check"></i><span>Professional Assistance</span></div>
+                        <div class="trust-item"><i class="fas fa-check"></i><span>Simple Online Process</span></div>
+                    </div>
+                </div>
+
+                <div class="hero-gallery">
+                    <div class="gallery-item large">
+                        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80" alt="International Airport">
+                        <div class="gallery-overlay">
+                            <div class="gallery-title">International Travel</div>
+                            <div class="gallery-subtitle">Seamless visa processing</div>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80" alt="Passport and Documents">
+                        <div class="gallery-overlay">
+                            <div class="gallery-title">Documentation</div>
+                            <div class="gallery-subtitle">Expert guidance</div>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80" alt="Business Travel">
+                        <div class="gallery-overlay">
+                            <div class="gallery-title">Business & Tourism</div>
+                            <div class="gallery-subtitle">Worldwide destinations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Doorstep Banner -->
+        <section class="doorstep-banner">
+            <div class="doorstep-container">
+                <i class="fas fa-home doorstep-icon"></i>
+                <h2 class="doorstep-title">Doorstep Visa Assistance</h2>
+                <p class="doorstep-text">
+                    We provide complete visa application guidance, document collection, and support right at your doorstep, making your journey to visa approval seamless, organized, and completely hassle-free.
+                </p>
+            </div>
+        </section>
+
+        <!-- Journey -->
+        <section class="section journey-section" id="how-it-works">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">How It Works</span>
+                    <h2 class="section-title">Your Journey in 4 Simple Steps</h2>
+                    <p class="section-subtitle">We've simplified the visa application process to make your international travel dreams a reality</p>
+                </div>
+                <div class="journey-grid">
+                    <div class="journey-card">
+                        <div class="journey-number">01</div>
+                        <div class="journey-icon"><i class="fas fa-globe"></i></div>
+                        <h3 class="journey-title">Choose Your Destination</h3>
+                        <p class="journey-text">Select your destination country and specify the number of travellers in your group.</p>
+                    </div>
+                    <div class="journey-card">
+                        <div class="journey-number">02</div>
+                        <div class="journey-icon"><i class="fas fa-clipboard-list"></i></div>
+                        <h3 class="journey-title">Answer 5 Quick Questions</h3>
+                        <p class="journey-text">Tell us the basic purpose and timing of your trip with just five simple questions.</p>
+                    </div>
+                    <div class="journey-card">
+                        <div class="journey-number">03</div>
+                        <div class="journey-icon"><i class="fas fa-user"></i></div>
+                        <h3 class="journey-title">Complete Your Information</h3>
+                        <p class="journey-text">Provide the personal and visa-related information required for initial assistance.</p>
+                    </div>
+                    <div class="journey-card">
+                        <div class="journey-number">04</div>
+                        <div class="journey-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <h3 class="journey-title">Download App & Generate Token</h3>
+                        <p class="journey-text">Download the Sky Global app, pay the ₹100 token/service fee and receive your unique token.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 20-Day Target -->
+        <section class="section target-section">
+            <div class="section-container">
+                <div class="target-container">
+                    <div class="target-content">
+                        <h2>20-Day Target Application Assistance</h2>
+                        <p>Sky Global aims to provide efficient application assistance within a target timeframe of up to 20 days where applicable. Actual visa processing times depend on the relevant embassy, consulate or immigration authority, appointment availability, visa category and the completeness of the application.</p>
+                        <div class="target-disclaimer">
+                            <strong>Important:</strong> The 20-day timeframe is a target for Sky Global assistance and is not a guarantee of visa approval or government processing time.
+                        </div>
+                        <a href="application.html" class="btn btn-gold btn-large">
+                            <i class="fas fa-rocket"></i> Start Your Application
+                        </a>
+                    </div>
+                    <div class="target-image">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80" alt="Travel Planning">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section class="section" id="services">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Our Services</span>
+                    <h2 class="section-title">Visa Services We Offer</h2>
+                    <p class="section-subtitle">Professional assistance for various visa categories to meet your international travel needs</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80" alt="Tourist Visa" class="service-image">
+                        <div class="service-overlay">
+                            <h3 class="service-title">Tourist Visa</h3>
+                            <p class="service-desc">For tourism and leisure travel to explore beautiful destinations worldwide.</p>
+                            <a href="application.html?purpose=Tourism" class="btn btn-primary">Start Application</a>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80" alt="Business Visa" class="service-image">
+                        <div class="service-overlay">
+                            <h3 class="service-title">Business Visa</h3>
+                            <p class="service-desc">For business meetings, conferences, and professional travel opportunities.</p>
+                            <a href="application.html?purpose=Business" class="btn btn-primary">Start Application</a>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80" alt="Student Visa" class="service-image">
+                        <div class="service-overlay">
+                            <h3 class="service-title">Student Visa</h3>
+                            <p class="service-desc">For studying abroad and pursuing educational opportunities internationally.</p>
+                            <a href="application.html?purpose=Study" class="btn btn-primary">Start Application</a>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80" alt="Work Visa" class="service-image">
+                        <div class="service-overlay">
+                            <h3 class="service-title">Work Visa</h3>
+                            <p class="service-desc">For eligible employment-related travel and work opportunities abroad.</p>
+                            <a href="application.html?purpose=Work" class="btn btn-primary">Start Application</a>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80" alt="Family Visitor Visa" class="service-image">
+                        <div class="service-overlay">
+                            <h3 class="service-title">Family / Visitor Visa</h3>
+                            <p class="service-desc">For visiting family members and friends residing in foreign countries.</p>
+                            <a href="application.html?purpose=Family Visit" class="btn btn-primary">Start Application</a>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" alt="Medical Visa" class="service-image">
+                        <div class="service-overlay">
+                            <h3 class="service-title">Medical Visa</h3>
+                            <p class="service-desc">For eligible medical treatment and healthcare services abroad.</p>
+                            <a href="application.html?purpose=Medical Treatment" class="btn btn-primary">Start Application</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Countries -->
+        <section class="section countries-section" id="countries">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Destinations</span>
+                    <h2 class="section-title">Popular Countries</h2>
+                    <p class="section-subtitle">We provide visa assistance for multiple international destinations</p>
+                </div>
+                <div class="countries-grid" id="countriesGrid"></div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="section" id="about">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Why Sky Global</span>
+                    <h2 class="section-title">Why Choose Us</h2>
+                    <p class="section-subtitle">We make visa assistance simple, organized and convenient</p>
+                </div>
+                <div class="why-grid">
+                    <div class="why-card">
+                        <div class="why-icon"><i class="fas fa-list"></i></div>
+                        <h3 class="why-title">Simple Process</h3>
+                        <p class="why-text">A straightforward 4-step application journey designed for your convenience.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon"><i class="fas fa-globe-americas"></i></div>
+                        <h3 class="why-title">Multiple Destinations</h3>
+                        <p class="why-text">Visa assistance for multiple international destinations worldwide.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon"><i class="fas fa-user-tie"></i></div>
+                        <h3 class="why-title">Professional Assistance</h3>
+                        <p class="why-text">Expert guidance throughout the entire application process.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon"><i class="fas fa-question-circle"></i></div>
+                        <h3 class="why-title">No Complicated Initial Form</h3>
+                        <p class="why-text">Only five quick travel questions are asked at the beginning.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon"><i class="fas fa-search"></i></div>
+                        <h3 class="why-title">Application Tracking</h3>
+                        <p class="why-text">Track your Sky Global application and token status easily.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon"><i class="fas fa-headset"></i></div>
+                        <h3 class="why-title">Dedicated Support</h3>
+                        <p class="why-text">Receive further assistance through the Sky Global mobile app.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQs -->
+        <section class="section journey-section" id="faqs">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">FAQs</span>
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                </div>
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <p style="color: var(--text-light); font-size: 1.1rem;">For more information, please contact our support team.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="section" id="contact">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Contact Us</span>
+                    <h2 class="section-title">Get In Touch</h2>
+                    <p class="section-subtitle">Have questions? We're here to help you with your visa application</p>
+                </div>
+                <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+                    <p style="color: var(--text-light); margin-bottom: 2rem;">Email us at info@skyglobal.com or call +91 1234567890</p>
+                    <a href="application.html" class="btn btn-primary btn-large">
+                        Start Your Application Now
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo-main">SKY GLOBAL</div>
+                    <p>Global Visa Assistance</p>
+                    <p style="font-size: 0.95rem; margin-bottom: 1.75rem;">Professional visa application assistance and travel documentation guidance for international travellers.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a onclick="scrollToSection('about')">About Us</a></li>
+                        <li><a onclick="scrollToSection('contact')">Contact</a></li>
+                        <li><a onclick="scrollToSection('how-it-works')">How It Works</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Visa Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="application.html?purpose=Tourism">Tourist Visa</a></li>
+                        <li><a href="application.html?purpose=Business">Business Visa</a></li>
+                        <li><a href="application.html?purpose=Study">Student Visa</a></li>
+                        <li><a href="application.html?purpose=Work">Work Visa</a></li>
+                        <li><a href="application.html?purpose=Family Visit">Family Visa</a></li>
+                        <li><a href="application.html?purpose=Medical Treatment">Medical Visa</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="application.html">Track Application</a></li>
+                        <li><a onclick="scrollToSection('faqs')">FAQs</a></li>
+                        <li><a href="#">Client Login</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sky Global. All Rights Reserved.</p>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;">Sky Global provides visa application assistance only. We do not guarantee visa approval. All visa decisions are made by the respective government authorities.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const countries = [
+            { code: 'canada', name: 'Canada', flag: '🇨🇦', image: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=800&q=80', visas: ['Tourist', 'Business', 'Student', 'Work'] },
+            { code: 'germany', name: 'Germany', flag: '🇩🇪', image: 'https://images.unsplash.com/photo-1560969184-10fe8719e047?w=800&q=80', visas: ['Tourist', 'Business', 'Student', 'Work'] },
+            { code: 'uae', name: 'United Arab Emirates', flag: '🇦🇪', image: 'https://images.unsplash.com/flagged/photo-1554992369-085dc418ee00?w=800&q=80', visas: ['Tourist', 'Business', 'Work'] },
+            { code: 'singapore', name: 'Singapore', flag: '🇸🇬', image: 'https://images.unsplash.com/photo-1751465912427-9ac7cd7bfa12?w=800&q=80', visas: ['Tourist', 'Business', 'Work'] },
+            { code: 'usa', name: 'United States', flag: '🇺🇸', image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&q=80', visas: ['Tourist', 'Business', 'Student', 'Work'] },
+            { code: 'uk', name: 'United Kingdom', flag: '🇬🇧', image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', visas: ['Tourist', 'Business', 'Student', 'Work'] },
+            { code: 'australia', name: 'Australia', flag: '🇦🇺', image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80', visas: ['Tourist', 'Business', 'Student', 'Work'] },
+            { code: 'france', name: 'France', flag: '🇫🇷', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80', visas: ['Tourist', 'Business', 'Student', 'Work'] }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const grid = document.getElementById('countriesGrid');
+            if (!grid) return;
+            grid.innerHTML = countries.map(country => `
+                <div class="country-card" onclick="window.location.href='application.html?country=${encodeURIComponent(country.name)}'">
+                    <img src="${country.image}" alt="${country.name}" class="country-image">
+                    <div class="country-content">
+                        <div class="country-header">
+                            <span class="country-flag">${country.flag}</span>
+                            <h3 class="country-name">${country.name}</h3>
+                        </div>
+                        <div class="country-visas">
+                            ${country.visas.map(visa => `<span class="visa-tag">${visa} Visa</span>`).join('')}
+                        </div>
+                        <a href="application.html?country=${encodeURIComponent(country.name)}" class="btn btn-primary" style="width: 100%; text-align: center; display: block;">View Visa Options</a>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('navMenu').classList.remove('active');
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.getElementById('navMenu');
+            nav.classList.toggle('active');
+        }
+
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 30px rgba(0,0,0,0.15)';
+            } else {
+                header.style.boxShadow = '0 2px 30px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
